@@ -15,15 +15,19 @@ use crate::page::{
 
 use super::PageIterator;
 
-/// 
+/// This meta is a small part of [`ColumnChunkMetaData`].
 #[derive(Debug, Clone)]
-pub struct PageReaderMetaData {
+pub struct PageMetaData {
+    // The number of total values in this column chunk.
     pub num_values: i64,
+    // Compression type
     pub compression: Compression,
+    // The descriptor of this parquet column
     pub descriptor: Descriptor,
 }
 
-impl PageReaderMetaData {
+impl PageMetaData {
+    /// Returns a new [`PageMetaData`].
     fn new(num_values: i64, compression: Compression, descriptor: Descriptor) -> Self {
         Self {
             num_values,
@@ -86,12 +90,12 @@ impl<R: Read> PageReader<R> {
         }
     }
 
-    /// Returns a new [`PageReader`]. 
+    /// Create a a new [`PageReader`] with less meta data.
     ///
     /// It assumes that the reader has been `seeked` to the beginning of `column`.
     pub fn new_with_page_meta(
         reader: R,
-        reader_meta: PageReaderMetaData,
+        reader_meta: PageMetaData,
         pages_filter: PageFilter,
         buffer: Vec<u8>,
     ) -> Self {
