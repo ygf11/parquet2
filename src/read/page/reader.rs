@@ -28,7 +28,7 @@ pub struct PageMetaData {
 
 impl PageMetaData {
     /// Returns a new [`PageMetaData`].
-    fn new(num_values: i64, compression: Compression, descriptor: Descriptor) -> Self {
+    pub fn new(num_values: i64, compression: Compression, descriptor: Descriptor) -> Self {
         Self {
             num_values,
             compression,
